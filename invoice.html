@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <style>
+      html {
+        width: 100%;
+        max-width: 80mm;
+        margin: auto;
+      }
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .english-text {
+        font-family: 'Courier New', Courier, monospace;
+      }
+      .invoice-box {
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        padding: 5px;
+      }
+      p {
+        margin: 0;
+        font-size: 15px;
+        font-weight: bold;
+      }
+      .Header h2 {
+        text-align: center;
+        margin: 0;
+      }
+      .Header .Tax-Numbers {
+        display: flex;
+        flex-flow: row-reverse;
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      .Header .Tax-Numbers .text {
+        flex-grow: 1;
+      }
+      .Header .Tax-Numbers .Num {
+        flex-grow: 1;
+      }
+      .Header .Tax-Numbers h4 {
+        margin: 0;
+        text-align: right;
+      }
+      .Header .date {
+        display: flex;
+        justify-content: space-between;
+      }
+      .Header .date p {
+        font-weight: normal;
+      }
+      .Header .information {
+        display: flex;
+      }
+      .Header .information .Num {
+        margin-left: 7%;
+      }
+      .Header .Barcode {
+        text-align: center;
+      }
+      .Header .Barcode h3 {
+        margin: 0;
+      }
+      .Header .Barcode img {
+        width: 150px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      td {
+        text-align: center;
+        padding: 1px;
+      }
+      table thead td p {
+        font-size: 16px;
+      }
+      table thead td:nth-child(5) {
+        text-align: left;
+      }
+      .SecondTable tbody tr td {
+        padding: 5px;
+      }
+      table td:not(.sub, .noBorder) {
+        border-top: 1px solid black;
+      }
+      table .sub {
+        border-bottom: 1px solid black;
+      }
+      table .sub {
+        text-align: right;
+      }
+      table tbody .item {
+        text-align: center;
+      }
+      table thead .category {
+        text-align: right;
+      }
+      .SubTotal td {
+        text-align: left;
+        border-bottom: 1px dashed black;
+      }
+      .SubTotal td:nth-of-type(1) {
+        text-align: center;
+      }
+      .borderButton {
+        border-bottom: 1px solid black;
+      }
+      .text {
+        text-align: left;
+      }
+      .warning {
+        text-align: center;
+      }
+      .warning p {
+        margin-top: 5px;
+      }
+      .warning h1 {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-box">
+      <div class="Header">
+        <h2>شركة عملاق التوفير- الرياض</h2>
+
+        <div class="Tax-Numbers">
+          <div class="text">
+            <h4>: الرقم الضريبي</h4>
+            <h4>:رقم السجل التجاري</h4>
+          </div>
+
+          <div class="Num">
+            <h4>311379769400003</h4>
+            <h4>5951128299</h4>
+          </div>
+        </div>
+
+        <div class="date">
+          <p>{{date}}</p>
+          <p>{{time}}</p>
+        </div>
+
+        <div class="information english-text">
+          <div class="Text">
+            <p>Trans No.</p>
+            <p>Sales.</p>
+            <p>Cashier</p>
+            <p>Store</p>
+          </div>
+
+          <div class="Num">
+            <p>{{transactionNo}}</p>
+            <p>201</p>
+            <p>213 - POS213</p>
+            <p>مخزن الصالة-فرع الرياض- 201</p>
+          </div>
+        </div>
+
+        <div class="Barcode">
+          <h3>فاتورة ضريبية مبسطة</h3>
+          {{BarCode}}
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <td><p>الإجمـــالي</p></td>
+          <td><p>السعر</p></td>
+          <td><p>الكميه</p></td>
+          <td class="category"><p>الصنف</p></td>
+          <td><p>بيــــــــان</p></td>
+        </thead>
+
+        <tbody>
+          {{items}}
+        </tbody>
+      </table>
+
+      <table class="SecondTable">
+        <tbody>
+          <tr class="SubTotal">
+            <td class="tdSubTotal" colspan="1"><p>{{total}}</p></td>
+            <td class="tdSubTotal" colspan="4"><p>الإجمالي قبل الضريبة</p></td>
+          </tr>
+
+          <tr>
+            <td class="noBorder"><p>%{{discount}}</p></td>
+            <td class="noBorder text" colspan="4"><p>الخصم</p></td>
+          </tr>
+
+          <tr>
+            <td class="noBorder"><p>{{addedTax}}</p></td>
+            <td class="noBorder text" colspan="4">
+              <p>ضريبة القيمة المضافة</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="borderButton noBorder"><p>{{subTotal}}</p></td>
+            <td class="borderButton noBorder text" colspan="4">
+              <p>الإجمـالي النهائي</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td class=" noBorder"><p>{{SecondSubTotal}}</p></td>
+            <td class=" noBorder text" colspan="4">
+              <p>اجمالي المدفوع</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="noBorder"><p>{{amountPaid}}</p></td>
+            <td class="noBorder text" colspan="4"><p>الصافي</p></td>
+          </tr>
+
+          <tr>
+            <td class=" borderButton noBorder"><p>{{balanceDue}}</p></td>
+            <td class=" borderButton noBorder text" colspan="4"><p>الباقي</p></td>
+          </tr>
+
+          <tr>
+            <td><p>{{numOfProducts}}</p></td>
+            <td><p>عــدد القطــع</p></td>
+            <td><p>{{secondAmountPaid}}</p></td>
+            <td colspan="2"><p>المبلغ المدفوع نقدأ</p></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning">
+        <p>
+          سياسة الاستبدال والاسترجاع والضمان <br />
+          يشترط احضار الفاتورة عند الإستبدال او الاسترجاع <br />
+          وان يكون الاصناف كحالتها عند البيع <br />
+          مدة الاسترجاع المسموح بها ٣ايام من تاريخ الفاتورة <br />
+          والاستبدال ٧ايام <br />
+          الملابس الداخلية وأصناف شي إن وأدوات التجميل <br />
+          الحلويات لاترد ولا تستبدل
+        </p>
+        <h1>شكراً لتسوقكم</h1>
+        <p>إجمالي الفاتورة شامله ضريبة القيمة المضافة %١٥</p>
+        <div class="QrCode">{{QrCode}}</div>
+        <div class="SecondQrCode">
+          <h5>امسح الباركود الخاص بنا لمتابعتنا على برامج التواصل الاجتماعي</h5>
+          {{SecondQrCode}}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
