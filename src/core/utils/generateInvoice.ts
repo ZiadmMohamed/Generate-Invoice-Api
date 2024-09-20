@@ -7,7 +7,6 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 
 async function createInvoice(body, res) {
   let buffers = [];
-  
   let html = await fs.readFile("./invoice.html", { encoding: "utf8" });
   
   // Update the html variable with the modified html
@@ -64,17 +63,12 @@ async function inject(body, html) {
 
   const taxRate = 0.15;
   const addedTax = Total * taxRate;
-
   const discountAmount = Total * (discount / 100);
-
   const subTotal = (Total - discountAmount) + addedTax ;
   
-  if (amountPaid > subTotal) {
+  if (amountPaid > subTotal) 
     throw new HttpException('the Paid Amount  Is More Than We Need', HttpStatus.PRECONDITION_FAILED);
-  }
-  if (amountPaid < 0) {
-    throw new HttpException('enter positive value', HttpStatus.PRECONDITION_FAILED);
-  }
+  
   const balanceDue = subTotal - amountPaid;
   const numOfProducts = items.length;
 

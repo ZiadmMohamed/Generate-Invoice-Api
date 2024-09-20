@@ -1,11 +1,7 @@
 import {  createCanvas, loadImage } from "canvas";
-
 var QRCode = require('qrcode')
 const path = require('path');
 const sharp = require('sharp');
-
-
-
 
 async function convertLogoBackgroundToWhite(inputImagePath, outputImagePath) {
       await sharp(inputImagePath)
@@ -16,23 +12,14 @@ async function convertLogoBackgroundToWhite(inputImagePath, outputImagePath) {
   
 }
 
-
-
-
 export async function generateQRCode(url,logoPath = null) {
-
-    try {
+try {
       const canvas = createCanvas(100, 100);
       const ctx = canvas.getContext('2d');
       
-    await QRCode.toCanvas(canvas, url, {
-        errorCorrectionLevel: 'H',
-        width: 100,
-        margin: 0
-      });
+    await QRCode.toCanvas(canvas, url, { errorCorrectionLevel: 'H', width: 100, margin: 0 });
 
-      if (logoPath) {
-
+if (logoPath) {
     const modifiedLogoPath = `modified-${path.basename(logoPath)}`;
     const processedLogoPath = await convertLogoBackgroundToWhite(logoPath, modifiedLogoPath);
     const logo = await loadImage(processedLogoPath);
@@ -42,13 +29,12 @@ export async function generateQRCode(url,logoPath = null) {
     const y = (canvas.height - logoSize) / 2;
 
     ctx.drawImage(logo, x, y, logoSize, logoSize);
-
-      }
+}
 
       const qrCodeBase64 = canvas.toDataURL('image/png').replace(/^data:image\/png;base64,/, "");
       return qrCodeBase64;
 
-      } catch (error) {
+} catch (error) {
       console.error('Error generating QR Code:', error);
       return null;
     }
